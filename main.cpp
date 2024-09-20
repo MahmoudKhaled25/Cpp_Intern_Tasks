@@ -111,10 +111,11 @@ void addBook(void)
 
 void delBook(void)
 {
-    Book book{};
+    string isbn;
 
-    cin >> book;
-    myLib.remove_book(book);
+    cout << "Enter book ISBN: ";
+    cin >> isbn;
+    myLib.remove_book(isbn);
 }
 
 void Borrow(void)

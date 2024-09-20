@@ -33,10 +33,10 @@ bool Library::add_book(const Book &book, unsigned int copies)
     return res;
 }
 
-bool Library::remove_book(const Book &book)
+bool Library::remove_book(const string &isbn)
 {
     bool res {false};
-    auto it {book_collection.find(book.isbn)};
+    auto it {book_collection.find(isbn)};
 
     if (it != book_collection.end())
     {
@@ -48,7 +48,7 @@ bool Library::remove_book(const Book &book)
         res = true;
         cout << "Book removed successfully" << endl;
         
-        ss << "Book: " << book.title << " [" << book.isbn << "] removed successfully at " 
+        ss << "Book: " << it->second.book.title << " [" << it->second.book.isbn << "] removed successfully at " 
             << localTime->tm_mon+1 << '/' << localTime->tm_mday << '/' << localTime->tm_year+1900
             << " - " << localTime->tm_hour << ':' << localTime->tm_min << ':' << localTime->tm_sec;
         history.push(ss.str());
@@ -61,21 +61,22 @@ bool Library::remove_book(const Book &book)
     return res;
 }
 
-bool Library::remove_book(const Book &book, unsigned int num_copies)
+bool Library::remove_book(const string &isbn, unsigned int num_copies)
 {
     bool res = false;
 
-    if (book_collection.find(book.isbn) != book_collection.end())
+    auto it {book_collection.find(isbn)};
+    if (it != book_collection.end())
     {
         stringstream ss{};
         auto currentTime = time(nullptr);
         auto localTime = localtime(&currentTime);
 
-        book_collection[book.isbn].available_copies -= num_copies;
+        book_collection[it->second.book.isbn].available_copies -= num_copies;
         res = true;
         cout << "Books removed successfully" << endl;
 
-        ss << "Book: " << book.title << " [" << book.isbn << "] removed successfully at " 
+        ss << "Book: " << it->second.book.title << " [" << it->second.book.isbn << "] removed successfully at " 
             << localTime->tm_mon+1 << '/' << localTime->tm_mday << '/' << localTime->tm_year+1900
             << " - " << localTime->tm_hour << ':' << localTime->tm_min << ':' << localTime->tm_sec;
         history.push(ss.str());

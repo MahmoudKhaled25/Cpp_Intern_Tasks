@@ -28,8 +28,8 @@ private:
 
 public:
     bool add_book(const Book &book, unsigned int copies);
-    bool remove_book(const Book &book);
-    bool remove_book(const Book &book, unsigned int num_copies);
+    bool remove_book(const string &isbn);
+    bool remove_book(const string &isbn, unsigned int num_copies);
     bool register_member(const Member &member);
     bool borrow_book(const string &member_id, const string &book_isbn);
     bool return_book(const string &member_id, const string &book_isbn);
