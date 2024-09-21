@@ -9,7 +9,9 @@ Library myLib{};
 
 void printList(void);
 void addMem(void);
+void upMem(void);
 void addBook(void);
+void upBook(void);
 void delBook(void);
 void Borrow(void);
 void Return(void);
@@ -21,7 +23,7 @@ int main(void)
 {
     int choice{};
 
-    while (choice < 9)
+    while (choice < 11)
     {
         cout << setw(20) << setfill('-') << "";
         cout << setfill(' ') << endl;
@@ -38,30 +40,38 @@ int main(void)
                 break;
 
             case 2:
-                addBook();
+                upMem();
                 break;
 
             case 3:
-                delBook();
+                addBook();
                 break;
 
             case 4:
-                Borrow();
+                upBook();
                 break;
 
             case 5:
-                Return();
+                delBook();
                 break;
 
             case 6:
-                showBooks();
+                Borrow();
                 break;
 
             case 7:
-                showMembers();
+                Return();
                 break;
 
             case 8:
+                showBooks();
+                break;
+
+            case 9:
+                showMembers();
+                break;
+
+            case 10:
                 showHistory();
                 break;
 
@@ -76,17 +86,17 @@ int main(void)
 
 void printList(void)
 {
-    
-
     cout << "1- Add member\n"
-        << "2- Add book\n"
-        << "3- Remove book\n"
-        << "4- Borrow book\n"
-        << "5- Return book\n"
-        << "6- Show book collection\n"
-        << "7- Show members\n"
-        << "8- Show history\n"
-        << "9- Exit\n"
+        << "2- Update Member\n"
+        << "3- Add book\n"
+        << "4- Update book\n"
+        << "5- Remove book\n"
+        << "6- Borrow book\n"
+        << "7- Return book\n"
+        << "8- Show book collection\n"
+        << "9- Show members\n"
+        << "10- Show history\n"
+        << "11- Exit\n"
         << "Choice: ";
 }
 
@@ -98,6 +108,15 @@ void addMem(void)
     myLib.register_member(member);
 }
 
+void upMem(void)
+{
+    string id;
+
+    cout << "Enter member ID: ";
+    cin >> id;
+    myLib.update_member(id);
+}
+
 void addBook(void)
 {
     Book book{};
@@ -107,6 +126,15 @@ void addBook(void)
     cout << "Enter the number of copies: ";
     cin >> num;
     myLib.add_book(book, num);
+}
+
+void upBook(void)
+{
+    string isbn;
+
+    cout << "Enter book ISBN: ";
+    cin >> isbn;
+    myLib.update_book(isbn);
 }
 
 void delBook(void)

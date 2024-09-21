@@ -33,6 +33,48 @@ bool Library::add_book(const Book &book, unsigned int copies)
     return res;
 }
 
+bool Library::update_book(const string &isbn)
+{
+    bool res = false;
+    auto it = book_collection.find(isbn);
+
+    if (it != book_collection.end())
+    {
+        stringstream ss{};
+        Book temp{};
+        auto currentTime = time(nullptr);
+        auto localTime = localtime(&currentTime);
+
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin >> temp;
+        
+        if (book_collection.find(temp.isbn) == book_collection.end())
+        {
+            book_collection[temp.isbn].total_copies = it->second.total_copies;
+            book_collection[temp.isbn].available_copies = it->second.available_copies;
+            book_collection[temp.isbn].book = temp;
+            book_collection.erase(it);
+            res = true;
+            cout << "Book updated successfully" << endl;
+            ss << "Book: " << it->second.book.title << " [" << it->second.book.isbn << "] updated successfully at " 
+                << localTime->tm_mon+1 << '/' << localTime->tm_mday << '/' << localTime->tm_year+1900
+                << " - " << localTime->tm_hour << ':' << localTime->tm_min << ':' << localTime->tm_sec;
+            history.push(ss.str());
+        }
+        else
+        {
+            cout << "ISBN is already taken!" << endl;
+        }
+    }
+    else
+    {
+        cout << "Book doesn't exists!" << endl;
+    }
+
+    return res;
+}
+
 bool Library::remove_book(const string &isbn)
 {
     bool res {false};
@@ -111,6 +153,47 @@ bool Library::register_member(const Member &member)
     else
     {
         cout << "Member already exists!" << endl;
+    }
+
+    return res;
+}
+
+bool Library::update_member(const string &member_id)
+{
+    bool res = false;
+    auto it = members.find(member_id);
+
+    if (it != members.end())
+    {
+        stringstream ss{};
+        Member temp{};
+        auto currentTime = time(nullptr);
+        auto localTime = localtime(&currentTime);
+
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin >> temp;
+        
+        if (members.find(temp.id) == members.end())
+        {
+            members[temp.id].borrowed_books = it->second.borrowed_books;
+            members[temp.id].member = temp;
+            members.erase(it);
+            res = true;
+            cout << "Member updated successfully" << endl;
+            ss << "Member: " << it->second.member.name << " [" << it->second.member.id << "] updated successfully at " 
+                << localTime->tm_mon+1 << '/' << localTime->tm_mday << '/' << localTime->tm_year+1900
+                << " - " << localTime->tm_hour << ':' << localTime->tm_min << ':' << localTime->tm_sec;
+            history.push(ss.str());
+        }
+        else
+        {
+            cout << "ID is already taken!" << endl;
+        }
+    }
+    else
+    {
+        cout << "Member doesn't exists!" << endl;
     }
 
     return res;
@@ -251,7 +334,7 @@ void Library::display_books(void) const
 
 void Library::display_members(void) const
 {
-    if (book_collection.empty())
+    if (members.empty())
     {
         cout << "\nNo members in the system!\n" << endl;
     }
